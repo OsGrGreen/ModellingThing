@@ -2,6 +2,7 @@ use rustCad::*;
 
 use beryllium::*;
 use ultraviolet::*;
+use  beryllium::MouseButton;
 
 use core::{
     convert::{TryFrom, TryInto},
@@ -14,6 +15,8 @@ use std::{f32::INFINITY, ffi::CString};
 
 type Vertex = [f32; 3];
 type TriIndexes = [u32; 3];
+
+
 
 const WINDOW_TITLE: &str = "RUST CAD";
 
@@ -101,6 +104,8 @@ fn main() {
     let mut new_ind: [isize; 2] = [-1, -1];
     let mut last_changed: u8 = 1;
 
+    let mut selected: i32 = -1;
+
     rustCad::polygon_mode(rustCad::PolygonMode::Fill);
     'main_loop: loop {
         // handle events this frame
@@ -138,6 +143,12 @@ fn main() {
                     }
                 }
                 Event::MouseButton(e) => {
+
+                    //Simulate right click
+                    if e.button.has_all(MouseButton::Left) && e.button != MouseButton::Left{
+                        println!("YIPPI");
+                    }
+
                     if e.is_pressed && e.button == MouseButton::Left && !is_ctrl {
                         println!("{:#?}", new_ind);
                         if new_ind[0] >= 0 && new_ind[1] >= 0 && new_ind[0] != new_ind[1]{
@@ -152,8 +163,7 @@ fn main() {
                             new_ind[0] = -1;
                             new_ind[1] = -1;
                         }
-                    }
-                    if e.is_pressed && e.button == MouseButton::Left && is_ctrl {
+                    }else if e.is_pressed && e.button == MouseButton::Left{
                         let new_coords = convert_object_coord((e.x_pos as f32, e.y_pos as f32));
                         let closest_index = get_closest_index(new_coords, &vert_vec);
                         if closest_index != -1 {
@@ -187,6 +197,11 @@ fn main() {
         win.swap_window(); // Swap the draw_buffer and the display buffer which actually displays what we have drawn.
     }
 }
+
+fn print_type_of<T>(_: &T) {
+    println!("{}", std::any::type_name::<T>())
+}
+
 
 pub fn update_vbo(vert_offset: usize, vao: &rustCad::VertexArray,vbo: rustCad::VertexBuffer, verts: &Vec<Vertex>) -> rustCad::VertexBuffer {
     let vertices: &[Vertex] = &verts[..];

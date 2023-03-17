@@ -4,9 +4,9 @@ version = 3
 
 [[package]]
 name = "beryllium"
-version = "0.2.1"
+version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d6306aa54919177d3aa288314dbcceab70fef2b043c8957b29a99820804a64f8"
+checksum = "230b10dc4e60f2da11adff38e82e99585daa3ece483b3196490d2f3fcf97c635"
 dependencies = [
  "fermium",
  "objc",
@@ -19,12 +19,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c041d3eab048880cb0b86b256447da3f18859a163c3b8d8893f4e6368abe6393"
 
 [[package]]
-name = "fermium"
-version = "0.1.4"
+name = "chlorine"
+version = "1.0.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e0db7d98893b18bff24e14593a05ff0dccba8cc6ed795dce5623213acffda87d"
+checksum = "75476fe966a8af7c0ceae2a3e514afa87d4451741fcdfab8bfaa07ad301842ec"
+
+[[package]]
+name = "fermium"
+version = "200.12.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5d43340fadb4f6bd408a8a5fc30da3754bdca4d64ab8daf2ecffc6c6524b662f"
 dependencies = [
- "libc",
+ "chlorine",
 ]
 
 [[package]]

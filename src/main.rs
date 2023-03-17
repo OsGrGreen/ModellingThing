@@ -104,7 +104,7 @@ fn main() {
     let mut new_ind: [isize; 2] = [-1, -1];
     let mut last_changed: u8 = 1;
 
-    let mut selected: i32 = -1;
+    let mut selected: isize = -1;
 
     rustCad::polygon_mode(rustCad::PolygonMode::Fill);
     'main_loop: loop {
@@ -146,7 +146,13 @@ fn main() {
 
                     //Simulate right click
                     if e.button.has_all(MouseButton::Left) && e.button != MouseButton::Left{
-                        println!("YIPPI");
+                        if selected == -1{
+                            let new_coords = convert_object_coord((e.x_pos as f32, e.y_pos as f32));
+                            selected = get_closest_index(new_coords, &vert_vec);
+                        }else {
+                            selected = -1;
+                        }
+                        println!("{}", selected);
                     }
 
                     if e.is_pressed && e.button == MouseButton::Left && !is_ctrl {
@@ -175,6 +181,14 @@ fn main() {
                                 last_changed = 1;
                             }
                         }
+                    }
+                }
+                Event::MouseMotion(e) => {
+                    if selected != -1{
+                        let new_coords = convert_object_coord((e.x_pos as f32, e.y_pos as f32));
+                        let old_z:f32 = vert_vec[selected as usize][2];
+                        vert_vec[selected as usize] = [new_coords.0,new_coords.1,old_z];
+                        vbo = update_single_vbo(selected.try_into().unwrap(), &vao, vbo, vert_vec[selected as usize]);
                     }
                 }
                 _ => (),

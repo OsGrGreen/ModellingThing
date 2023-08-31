@@ -2,7 +2,7 @@ use rustCad::*;
 
 use beryllium::*;
 use ultraviolet::*;
-use  beryllium::MouseButton;
+use beryllium::MouseButton;
 
 use core::{
     convert::{TryFrom, TryInto},
@@ -145,14 +145,14 @@ fn main() {
                 Event::MouseButton(e) => {
 
                     //Simulate right click
-                    if e.button.has_all(MouseButton::Left) && e.button != MouseButton::Left{
+                    if e.button.has_all(MouseButton::Left) && e.is_pressed && e.button != MouseButton::Left{
                         if selected == -1{
                             let new_coords = convert_object_coord((e.x_pos as f32, e.y_pos as f32));
                             selected = get_closest_index(new_coords, &vert_vec);
                         }else {
                             selected = -1;
                         }
-                        println!("{}", selected);
+                        println!("Selected vertex is: {}", selected);
                     }
 
                     if e.is_pressed && e.button == MouseButton::Left && !is_ctrl {
